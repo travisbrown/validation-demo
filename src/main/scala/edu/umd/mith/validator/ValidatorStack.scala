@@ -2,13 +2,18 @@ package edu.umd.mith.validator
 
 import org.scalatra._
 import org.scalatra.fileupload._
-import scalate.ScalateSupport
+import org.scalatra.json._
+import org.scalatra.scalate.ScalateSupport
 import org.fusesource.scalate.{ TemplateEngine, Binding }
 import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import javax.servlet.http.HttpServletRequest
-import collection.mutable
+import javax.xml.XMLConstants
+import javax.xml.validation.SchemaFactory
+import scala.collection.mutable
 
-trait ValidatorStack extends ScalatraServlet with ScalateSupport with FileUploadSupport {
+trait ValidatorStack extends ScalatraServlet
+  with ScalateSupport with FileUploadSupport with JacksonJsonSupport {
+
   // First we have to register the Jing validator.
   System.setProperty(
     classOf[SchemaFactory].getName() + ":" + XMLConstants.RELAXNG_NS_URI,
