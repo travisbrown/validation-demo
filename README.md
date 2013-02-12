@@ -26,14 +26,14 @@ $ SCHEMA=https://raw.github.com/travisbrown/validation-demo/master/examples/shel
 With a well-formed and valid file, we'll get an empty array:
 
 ```sh
-curl -X POST -F "document=@examples/ox-ms_abinger_c56-0001.xml" \
+$ curl -X POST -F "document=@examples/ox-ms_abinger_c56-0001.xml" \
   http://localhost:8080/validate?schema=$SCHEMA
 ```
 
 The following file isn't well-formed:
 
 ```sh
-curl -X POST -F "document=@examples/ox-ms_abinger_c56-0001-nwf.xml" \
+$ curl -X POST -F "document=@examples/ox-ms_abinger_c56-0001-nwf.xml" \
   http://localhost:8080/validate?schema=$SCHEMA
 ```
 
@@ -51,7 +51,7 @@ And we get this:
 And finally the following file is well-formed, but does not validate against our schema:
 
 ```sh
-curl -X POST -F "document=@examples/ox-ms_abinger_c56-0001-invalid.xml" \
+$ curl -X POST -F "document=@examples/ox-ms_abinger_c56-0001-invalid.xml" \
   http://localhost:8080/validate?schema=$SCHEMA
 ```
 
