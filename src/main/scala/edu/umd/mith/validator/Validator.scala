@@ -29,7 +29,6 @@ class Validator extends ValidatorStack {
     contentType = formats("json")
 
     val schemaUrl = params("schema")
-    println(schemaUrl)
 
     val rngValidator = SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI)
       .newSchema(new StreamSource(schemaUrl))
