@@ -39,7 +39,7 @@ class ValidationErrorHandler extends ErrorHandler {
     )
   }
 
-  def fatalError(e: SAXParseException) { println("FATAL!")
+  def fatalError(e: SAXParseException) {
     this.errors += FatalError(
       e.getSystemId, e.getMessage, e.getLineNumber, e.getColumnNumber
     )
