@@ -25,6 +25,28 @@ class Validator extends ValidatorStack {
     </html>
   }
 
+  get("/validate") {
+    contentType = formats("json")
+
+    val schemaUrl = params("schema")
+    val document = new java.io.StringReader(params("document"))
+
+    val rngValidator = SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI)
+      .newSchema(new StreamSource(schemaUrl))
+      .newValidator
+
+    val handler = new ValidationErrorHandler
+    rngValidator.setErrorHandler(handler)
+
+    val errors = try {
+      rngValidator.validate(new StreamSource(document))
+      handler.getErrors
+    } catch {
+      case _: SAXException => handler.getErrors
+    }
+    
+    errors
+  }
   post("/validate") {
     contentType = formats("json")
 
