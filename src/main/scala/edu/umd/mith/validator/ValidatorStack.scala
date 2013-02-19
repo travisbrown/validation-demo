@@ -20,6 +20,8 @@ trait ValidatorStack extends ScalatraServlet
     "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory"
   )
 
+  override def jsonpCallbackParameterNames: Iterable[String] = Some("callback")
+
   /* wire up the precompiled templates */
   override protected def defaultTemplatePath: List[String] = List("/templates/views")
   override protected def createTemplateEngine(config: ConfigT) = {
