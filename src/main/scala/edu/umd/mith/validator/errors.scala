@@ -17,15 +17,15 @@ trait SaxError extends XmlError {
 }
 
 case class FatalError(
-  uri: String, message: String, line: Int, column: Int
+  uri: String, message: String, line: Int, column: Int, `type`: String = "error"
 ) extends SaxError
 
 case class NonFatalError(
-  uri: String, message: String, line: Int, column: Int
+  uri: String, message: String, line: Int, column: Int, `type`: String = "error"
 ) extends SaxError
 
 case class Warning(
-  uri: String, message: String, line: Int, column: Int
+  uri: String, message: String, line: Int, column: Int, `type`: String = "warning"
 ) extends SaxError
 
 class ValidationErrorHandler extends ErrorHandler {
