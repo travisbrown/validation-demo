@@ -12,13 +12,21 @@ import javax.xml.validation.SchemaFactory
 import scala.collection.mutable
 
 trait ValidatorStack extends ScalatraServlet
-  with ScalateSupport with FileUploadSupport with JacksonJsonSupport {
+  with ScalateSupport with FileUploadSupport with JacksonJsonSupport with CorsSupport {
 
   // First we have to register the Jing validator.
   System.setProperty(
     classOf[SchemaFactory].getName() + ":" + XMLConstants.RELAXNG_NS_URI,
     "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory"
   )
+
+  // Respond to the preflight request for CORS.
+  options("/*"){
+    response.setHeader(
+      "Access-Control-Allow-Headers",
+      request.getHeader("Access-Control-Request-Headers")
+    )
+  }
 
   override def jsonpCallbackParameterNames: Iterable[String] = Some("callback")
 
