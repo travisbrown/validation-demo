@@ -6,7 +6,7 @@ import org.scalatra.fileupload._
 import org.scalatra.scalate.ScalateSupport
 import org.scalatra.json._
 
-import java.io.File
+import java.io.{ File, InputStreamReader, StringReader }
 import javax.xml.XMLConstants
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
@@ -29,7 +29,7 @@ class Validator extends ValidatorStack {
     contentType = formats("json")
 
     val schemaUrl = params("schema")
-    val document = new java.io.StringReader(params("document"))
+    val document = new StringReader(params("document"))
 
     val rngValidator = SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI)
       .newSchema(new StreamSource(schemaUrl))
@@ -52,6 +52,14 @@ class Validator extends ValidatorStack {
 
     val schemaUrl = params("schema")
 
+    val source = new StreamSource(
+      params
+
+        .get("document")
+        .map(doc => new StringReader(doc))
+        .getOrElse(new InputStreamReader(fileParams("document").getInputStream))
+    )
+
     val rngValidator = SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI)
       .newSchema(new StreamSource(schemaUrl))
       .newValidator
@@ -60,9 +68,7 @@ class Validator extends ValidatorStack {
     rngValidator.setErrorHandler(handler)
 
     val errors = try {
-      rngValidator.validate(
-        new StreamSource(fileParams("document").getInputStream)
-      )
+      rngValidator.validate(source)
       handler.getErrors
     } catch {
       case _: SAXException => handler.getErrors
